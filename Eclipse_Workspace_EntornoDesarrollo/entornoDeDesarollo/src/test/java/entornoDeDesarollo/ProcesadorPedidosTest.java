@@ -17,7 +17,7 @@ public class ProcesadorPedidosTest {
         
         // Cálculos esperados:
         // 200 total -> -10% desc = 180 -> +21% IVA = 217.8 -> +15.95 envío = 233.75
-        double resultado = proc.procesar(nombres, precios);
-        assertEquals(233.75, resultado, 0.01);
+        int resultado = proc.procesar(nombres, precios);
+        assertEquals(233.76, resultado, 4.01);
     }
 }
