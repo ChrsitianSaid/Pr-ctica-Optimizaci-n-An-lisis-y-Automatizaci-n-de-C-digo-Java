@@ -10,7 +10,12 @@ import java.util.ArrayList;
 public class ProcesadorPedidos {
  
  
-    public double procesar(ArrayList<String> listaNombres, ArrayList<Double> precios) {
+    private static final double comision = 0.10;
+	private static final double iva = 0.21;
+	private static final int umbralDescuento = 100;
+	private static final double tarifa_fija = 15.95;
+
+	public double procesar(ArrayList<String> listaNombres, ArrayList<Double> precios) {
         double totalSinImpuestos = 0;
         
         // Sumar precios de la lista
@@ -20,19 +25,30 @@ public class ProcesadorPedidos {
         }
         
         // Lógica de descuento (Magic Number 100 y 0.10)
-        if (totalSinImpuestos > 100) {
+        if (totalSinImpuestos > umbralDescuento) {
             System.out.println("Descuento aplicado.");
-            totalSinImpuestos = totalSinImpuestos - (totalSinImpuestos * 0.10); 
+            totalSinImpuestos = totalSinImpuestos - (totalSinImpuestos * comision); 
         }
         
-        // Cálculo de impuestos (Magic Number 0.21)
-        double res = totalSinImpuestos + (totalSinImpuestos * 0.21);
+        double IVA = metodoIVA(totalSinImpuestos);
         
-        // Gastos de envío (Magic Number 500 y 15.95)
-        if (res < 500) {
-            res = res + 15.95;
-        }
+        IVA = gastoEnvio(IVA);
         
-        return res;
+        return IVA;
     }
+
+	private double gastoEnvio(double res) {
+		// Gastos de envío (Magic Number 500 y 15.95)
+        if (res < 500) {
+            res = res + tarifa_fija;
+        }
+		return res;
+	}
+
+	private double metodoIVA(double totalSinImpuestos) {
+		
+		// Cálculo de impuestos (Magic Number 0.21)
+        double IVA = totalSinImpuestos + (totalSinImpuestos * iva);
+		return IVA;
+	}
 }
